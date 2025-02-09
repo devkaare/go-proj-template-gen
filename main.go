@@ -14,27 +14,20 @@ func check(e error) {
 }
 
 var (
-	mainFileDir = "test/cmd/api/"
-	handlerDir  = "test/handler/"
-	serverDir   = "test/server/"
-	viewsDir    = "test/views/"
-	// mainFileDir = "cmd/api/"
-	// handlerDir  = "handler/"
-	// serverDir   = "server/"
-	// viewsDir    = "views/"
+	mainFileDir = "cmd/api/"
+	handlerDir  = "handler/"
+	serverDir   = "server/"
+	viewsDir    = "views/"
 
-	mainFilePath      = filepath.Join(mainFileDir, "main.go")
-	handlerFilePath   = filepath.Join(handlerDir, "handler.go")
-	serverFilePath    = filepath.Join(serverDir, "server.go")
-	routesFilePath    = filepath.Join(serverDir, "routes.go")
-	viewsBaseFilePath = filepath.Join(viewsDir, "base.templ")
-	viewsHomeFilePath = filepath.Join(viewsDir, "home.templ")
-	makeFilePath      = "test/Makefile"
-	envFilePath       = "test/.env"
-	goModFilePath     = "test/go.mod"
-	// makeFilePath      = "Makefile"
-	// envFilePath       = ".env"
-	// goModFilePath     = "go.mod"
+	mainFilePath       = filepath.Join(mainFileDir, "main.go")
+	handlerFilePath    = filepath.Join(handlerDir, "handler.go")
+	serverFilePath     = filepath.Join(serverDir, "server.go")
+	routesFilePath     = filepath.Join(serverDir, "routes.go")
+	viewsBaseFilePath  = filepath.Join(viewsDir, "base.templ")
+	viewsHelloFilePath = filepath.Join(viewsDir, "hello.templ")
+	makeFilePath       = "Makefile"
+	envFilePath        = ".env"
+	goModFilePath      = "go.mod"
 
 	requiredPackages = []string{"github.com/go-chi/chi/v5", "github.com/go-chi/chi/v5/middleware", "github.com/go-chi/cors", "github.com/joho/godotenv", "github.com/a-h/templ"}
 )
@@ -144,7 +137,9 @@ func NewServer() *http.Server {
 import (
 	"net/http"
 
-	"github.com/devkaare/%s/handler"
+	"github.com/a-h/templ"
+	"github.com/devkaare/%[1]s/handler"
+	"github.com/devkaare/%[1]s/views"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -162,7 +157,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 		MaxAge:           300,
 	}))
 
-	r.Route("/", s.RegisterNewRoutes)
+	r.Get("/", templ.Handler(views.Hello()).ServeHTTP)
+
+	r.Route("/api", s.RegisterNewRoutes)
 
 	return r
 }
@@ -172,7 +169,9 @@ func (s *Server) RegisterNewRoutes(r chi.Router) {
 
 	r.Get("/hello", handler.Greet)
 
-}`, name)
+}
+
+`, name)
 	result[routesFilePath] = routesFileData
 
 	result[viewsBaseFilePath] = `package views
@@ -193,9 +192,9 @@ templ Base() {
 	</html>
 }`
 
-	result[viewsHomeFilePath] = `package views
+	result[viewsHelloFilePath] = `package views
 
-templ Home() {
+templ Hello() {
 	@Base() {
 		<p>Hello World!</p>
 	}
@@ -244,6 +243,10 @@ func main() {
 	rawData, err := addNameToFiles("foobar")
 	check(err)
 
+	testDir := "test/"
+	os.Mkdir(testDir, 0755)
+	os.Chdir(testDir)
+
 	fmt.Println("Creating folders...") // Create folders
 	os.MkdirAll(mainFileDir, 0755)
 	os.Mkdir(handlerDir, 0755)
@@ -258,7 +261,6 @@ func main() {
 
 	fmt.Println("Installing packages:")
 	for _, p := range requiredPackages {
-		os.Chdir("test")
 		fmt.Println("\tPackage:", p)
 		out, err := exec.Command("go", "get", p).Output()
 		check(err)
