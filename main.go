@@ -28,6 +28,7 @@ var (
 	viewsHelloFilePath = filepath.Join(viewsDir, "hello.templ")
 	makeFilePath       = "Makefile"
 	envFilePath        = ".env"
+	gitIgnoreFilePath  = ".gitignore"
 	goModFilePath      = "go.mod"
 
 	requiredPackages = []string{"github.com/go-chi/chi/v5", "github.com/go-chi/chi/v5/middleware", "github.com/go-chi/cors", "github.com/joho/godotenv", "github.com/a-h/templ"}
@@ -229,6 +230,8 @@ clean:
 	result[makeFilePath] = makeFileData
 
 	result[envFilePath] = `PORT=8080`
+
+	result[gitIgnoreFilePath] = `.env`
 
 	result[goModFilePath] = fmt.Sprintf(`module github.com/devkaare/%s
 
