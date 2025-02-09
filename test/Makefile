@@ -19,4 +19,3 @@ clean:
 	@go mod tidy
 
 .PHONY: all run build test clean
-	
