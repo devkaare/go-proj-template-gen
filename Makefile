@@ -7,7 +7,7 @@ run:
 
 build:
 	@echo "Building..."
-	@go build -o bin/go-project-gen $(MAIN_FILE_PATH)
+	@go build -o bin/go-proj-template-gen $(MAIN_FILE_PATH)
 test:
 	@echo "Testing..."
 	@go test ./... -v
