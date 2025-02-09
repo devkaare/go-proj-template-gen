@@ -95,7 +95,8 @@ type New struct{}
 
 func (t *New) Greet(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Hello World!"))
-}`
+}
+`
 	result[handlerFilePath] = handlerFileData
 
 	serverFileData := `package server
