@@ -83,7 +83,8 @@ func main() {
 	<-done
 
 	log.Println("Graceful shutdown complete.")
-}`, name)
+}
+`, name)
 	result[mainFilePath] = mainFileData
 
 	handlerFileData := `package handler
@@ -121,14 +122,15 @@ func NewServer() *http.Server {
 
 	// Declare Server config
 	server := &http.Server{
-		Addr:         fmt.Sprintf(":%%d", NewServer.port),
+		Addr:         fmt.Sprintf(":%d", NewServer.port),
 		Handler:      NewServer.RegisterRoutes(),
 		IdleTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
 
 	return server
-}`
+}
+`
 	result[serverFilePath] = serverFileData
 
 	routesFileData := fmt.Sprintf(`package server
@@ -143,7 +145,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 )
-
 
 func (s *Server) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
@@ -169,8 +170,7 @@ func (s *Server) RegisterNewRoutes(r chi.Router) {
 
 	r.Get("/hello", handler.Greet)
 
-}
-`, name)
+}`, name)
 	result[routesFilePath] = routesFileData
 
 	result[viewsBaseFilePath] = `package views

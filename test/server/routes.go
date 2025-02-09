@@ -36,4 +36,3 @@ func (s *Server) RegisterNewRoutes(r chi.Router) {
 	r.Get("/hello", handler.Greet)
 
 }
-
