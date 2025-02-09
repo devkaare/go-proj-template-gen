@@ -86,8 +86,7 @@ func main() {
 }`, name)
 	result[mainFilePath] = mainFileData
 
-	handlerFileData :=
-		`package handler
+	handlerFileData := `package handler
 
 import "net/http"
 
@@ -98,7 +97,7 @@ func (t *New) Greet(w http.ResponseWriter, r *http.Request) {
 }`
 	result[handlerFilePath] = handlerFileData
 
-	serverFileData := fmt.Sprintf(`package server
+	serverFileData := `package server
 
 import (
 	"fmt"
@@ -129,7 +128,7 @@ func NewServer() *http.Server {
 	}
 
 	return server
-}`)
+}`
 	result[serverFilePath] = serverFileData
 
 	routesFileData := fmt.Sprintf(`package server
@@ -144,6 +143,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 )
+
 
 func (s *Server) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
@@ -170,7 +170,6 @@ func (s *Server) RegisterNewRoutes(r chi.Router) {
 	r.Get("/hello", handler.Greet)
 
 }
-
 `, name)
 	result[routesFilePath] = routesFileData
 
@@ -178,19 +177,20 @@ func (s *Server) RegisterNewRoutes(r chi.Router) {
 
 templ Base() {
 	<!DOCTYPE html>
-	<html lang="en" >
+	<html lang="en">
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width,initial-scale=1"/>
 			<title>Welcome</title>
 		</head>
-		<body >
-			<main >
+		<body>
+			<main>
 				{ children... }
 			</main>
 		</body>
 	</html>
-}`
+}
+`
 
 	result[viewsHelloFilePath] = `package views
 
@@ -198,7 +198,8 @@ templ Hello() {
 	@Base() {
 		<p>Hello World!</p>
 	}
-}`
+}
+`
 
 	makeFileData := fmt.Sprintf(`MAIN_FILE_PATH = %s
 
@@ -220,7 +221,8 @@ clean:
 	@rm -rf main
 	@go mod tidy
 
-.PHONY: all run build test clean`, mainFilePath)
+.PHONY: all run build test clean
+	`, mainFilePath)
 	result[makeFilePath] = makeFileData
 
 	result[envFilePath] = `PORT=8080`
