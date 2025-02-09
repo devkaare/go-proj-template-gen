@@ -245,7 +245,7 @@ require (
 }
 
 func main() {
-	name := flag.String("name", "johndoe", "project name")
+	name := flag.String("name", "foobar", "project name")
 	flag.Parse()
 
 	rawData, err := addNameToFiles(*name)
