@@ -94,11 +94,7 @@ func addNameToFiles(name string) (map[string]string, error) {
 	handlerFileData := fmt.Sprintf(`
 		package handler
 
-		import (
-			"net/http"
-
-			"github.com/devkaare/%s/farms"
-		)
+		import "net/http"
 
 		type New struct{}
 
