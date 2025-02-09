@@ -244,21 +244,22 @@ func main() {
 	rawData, err := addNameToFiles("foobar")
 	check(err)
 
-	fmt.Println("Creating folders") // Create folders
+	fmt.Println("Creating folders...") // Create folders
 	os.MkdirAll(mainFileDir, 0755)
 	os.Mkdir(handlerDir, 0755)
 	os.Mkdir(serverDir, 0755)
 	os.Mkdir(viewsDir, 0755)
 
-	fmt.Println("Creating and writing files") // Create files and write data
+	fmt.Println("Creating and writing files:") // Create files and write data
 	for filePath, data := range rawData {
 		fmt.Println("\tFile:", filePath)
 		check(os.WriteFile(filePath, []byte(data), 0644))
 	}
 
-	fmt.Println("Installing packages")
+	fmt.Println("Installing packages:")
 	for _, p := range requiredPackages {
 		os.Chdir("test")
+		fmt.Println("\tPackage:", p)
 		out, err := exec.Command("go", "get", p).Output()
 		check(err)
 
