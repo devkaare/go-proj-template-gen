@@ -1,34 +1,32 @@
+package server
 
-		package server
+import (
+	"fmt"
+	"net/http"
+	"os"
+	"strconv"
+	"time"
 
-		import (
-			"fmt"
-			"net/http"
-			"os"
-			"strconv"
-			"time"
+	_ "github.com/joho/godotenv/autoload"
+)
 
-			_ "github.com/joho/godotenv/autoload"
-		)
+type Server struct {
+	port int
+}
 
-		type Server struct {
-			port int
-		}
+func NewServer() *http.Server {
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	NewServer := &Server{
+		port: port,
+	}
 
-		func NewServer() *http.Server {
-			port, _ := strconv.Atoi(os.Getenv("PORT"))
-			NewServer := &Server{
-				port: port,
-			}
+	// Declare Server config
+	server := &http.Server{
+		Addr:         fmt.Sprintf(":%d", NewServer.port),
+		Handler:      NewServer.RegisterRoutes(),
+		IdleTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
+	}
 
-			// Declare Server config
-			server := &http.Server{
-				Addr:         fmt.Sprintf(":%d", NewServer.port),
-				Handler:      NewServer.RegisterRoutes(),
-				IdleTimeout:  10 * time.Second,
-				WriteTimeout: 30 * time.Second,
-			}
-
-			return server
-		}
-	
+	return server
+}

@@ -87,150 +87,140 @@ func main() {
 	<-done
 
 	log.Println("Graceful shutdown complete.")
-}
-	`, name)
+}`, name)
 	result[mainFilePath] = mainFileData
 
 	handlerFileData :=
-		`
-		package handler
+		`package handler
 
-		import "net/http"
+import "net/http"
 
-		type New struct{}
+type New struct{}
 
-		func (t *New) Greet(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Hello World!"))
-		}
-		`
+func (t *New) Greet(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello World!"))
+}`
 	result[handlerFilePath] = handlerFileData
 
-	serverFileData := fmt.Sprintf(`
-		package server
+	serverFileData := fmt.Sprintf(`package server
 
-		import (
-			"fmt"
-			"net/http"
-			"os"
-			"strconv"
-			"time"
+import (
+	"fmt"
+	"net/http"
+	"os"
+	"strconv"
+	"time"
 
-			_ "github.com/joho/godotenv/autoload"
-		)
+	_ "github.com/joho/godotenv/autoload"
+)
 
-		type Server struct {
-			port int
-		}
+type Server struct {
+	port int
+}
 
-		func NewServer() *http.Server {
-			port, _ := strconv.Atoi(os.Getenv("PORT"))
-			NewServer := &Server{
-				port: port,
-			}
+func NewServer() *http.Server {
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	NewServer := &Server{
+		port: port,
+	}
 
-			// Declare Server config
-			server := &http.Server{
-				Addr:         fmt.Sprintf(":%%d", NewServer.port),
-				Handler:      NewServer.RegisterRoutes(),
-				IdleTimeout:  10 * time.Second,
-				WriteTimeout: 30 * time.Second,
-			}
+	// Declare Server config
+	server := &http.Server{
+		Addr:         fmt.Sprintf(":%%d", NewServer.port),
+		Handler:      NewServer.RegisterRoutes(),
+		IdleTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
+	}
 
-			return server
-		}
-	`)
+	return server
+}`)
 	result[serverFilePath] = serverFileData
 
-	routesFileData := fmt.Sprintf(`
-		package server
+	routesFileData := fmt.Sprintf(`package server
 
-		import (
-			"net/http"
+import (
+	"net/http"
 
-			"github.com/devkaare/%s/handler"
-			"github.com/go-chi/chi/v5"
-			"github.com/go-chi/chi/v5/middleware"
-			"github.com/go-chi/cors"
-		)
+	"github.com/devkaare/%s/handler"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+)
 
-		func (s *Server) RegisterRoutes() http.Handler {
-			r := chi.NewRouter()
-			r.Use(middleware.Logger)
+func (s *Server) RegisterRoutes() http.Handler {
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
 
-			r.Use(cors.Handler(cors.Options{
-				AllowedOrigins:   []string{"https://*", "http://*"},
-				AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
-				AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
-				AllowCredentials: true,
-				MaxAge:           300,
-			}))
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           300,
+	}))
 
-			r.Route("/", s.RegisterNewRoutes)
+	r.Route("/", s.RegisterNewRoutes)
 
-			return r
-		}
+	return r
+}
 
-		func (s *Server) RegisterNewRoutes(r chi.Router) {
-			handler := &handler.New{}
+func (s *Server) RegisterNewRoutes(r chi.Router) {
+	handler := &handler.New{}
 
-			r.Get("/hello", handler.Greet)
+	r.Get("/hello", handler.Greet)
 
-		}
-	`, name)
+}`, name)
 	result[routesFilePath] = routesFileData
 
-	result[viewsBaseFilePath] = `
-		package views
+	result[viewsBaseFilePath] = `package views
 
-		templ Base() {
-			<!DOCTYPE html>
-			<html lang="en" >
-				<head>
-					<meta charset="utf-8"/>
-					<meta name="viewport" content="width=device-width,initial-scale=1"/>
-					<title>Welcome</title>
-				</head>
-				<body >
-					<main >
-						{ children... }
-					</main>
-				</body>
-			</html>
-		}
-	`
+templ Base() {
+	<!DOCTYPE html>
+	<html lang="en" >
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width,initial-scale=1"/>
+			<title>Welcome</title>
+		</head>
+		<body >
+			<main >
+				{ children... }
+			</main>
+		</body>
+	</html>
+}
+`
 
-	result[viewsHomeFilePath] = `
-		package views
+	result[viewsHomeFilePath] = `package views
 
-		templ Home() {
-			@Base() {
-				</p>Hello World!</p>
-			}
-		}
-	`
+templ Home() {
+	@Base() {
+		</p>Hello World!</p>
+	}
+}
+`
 
-	makeFileData := fmt.Sprintf(`
-		MAIN_FILE_PATH = %s
+	makeFileData := fmt.Sprintf(`MAIN_FILE_PATH = %s
 
-		all: build test
+all: build test
 
-		run:
-			@go run $(MAIN_FILE_PATH)
+run:
+	@go run $(MAIN_FILE_PATH)
 
-		build:
-			@echo "Building..."
-			@go build $(MAIN_FILE_PATH)
+build:
+	@echo "Building..."
+	@go build $(MAIN_FILE_PATH)
 
-		test:
-			@echo "Testing..."
-			@go test ./... -v
+test:
+	@echo "Testing..."
+	@go test ./... -v
 
-		clean:
-			@echo "Cleaning..."
-			@rm -rf main
-			@go mod tidy
+clean:
+	@echo "Cleaning..."
+	@rm -rf main
+	@go mod tidy
 
-		.PHONY: all run build test clean
+.PHONY: all run build test clean
 	`, mainFilePath)
 	result[makeFilePath] = makeFileData
 
@@ -238,17 +228,16 @@ func main() {
 		PORT=8080
 	`
 
-	result[goModFilePath] = fmt.Sprintf(`
-		module github.com/devkaare/%s
+	result[goModFilePath] = fmt.Sprintf(`module github.com/devkaare/%s
 
-		go 1.23.5
+go 1.23.5
 
-		require (
-			github.com/a-h/templ v0.3.833
-			github.com/go-chi/chi/v5 v5.2.1
-			github.com/go-chi/cors v1.2.1
-			github.com/joho/godotenv v1.5.1
-		)
+require (
+	github.com/a-h/templ v0.3.833
+	github.com/go-chi/chi/v5 v5.2.1
+	github.com/go-chi/cors v1.2.1
+	github.com/joho/godotenv v1.5.1
+)
 	`, name)
 
 	return result, nil
