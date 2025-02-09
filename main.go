@@ -170,7 +170,8 @@ func (s *Server) RegisterNewRoutes(r chi.Router) {
 
 	r.Get("/hello", handler.Greet)
 
-}`, name)
+}
+`, name)
 	result[routesFilePath] = routesFileData
 
 	result[viewsBaseFilePath] = `package views
