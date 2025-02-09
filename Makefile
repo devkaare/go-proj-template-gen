@@ -1,21 +1,23 @@
-MAIN_FILE_PATH = main.go
 
-all: build test
+		MAIN_FILE_PATH = test/cmd/api/main.go
 
-run:
-	@go run $(MAIN_FILE_PATH)
+		all: build test
 
-build:
-	@echo "Building..."
-	@go build $(MAIN_FILE_PATH)
+		run:
+			@go run $(MAIN_FILE_PATH)
 
-test:
-	@echo "Testing..."
-	@go test ./... -v
+		build:
+			@echo "Building..."
+			@go build $(MAIN_FILE_PATH)
 
-clean:
-	@echo "Cleaning..."
-	@rm -rf main
-	@go mod tidy
+		test:
+			@echo "Testing..."
+			@go test ./... -v
 
-.PHONY: all run build test clean
+		clean:
+			@echo "Cleaning..."
+			@rm -rf main
+			@go mod tidy
+
+		.PHONY: all run build test clean
+	

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 )
 
@@ -12,10 +13,14 @@ func check(e error) {
 }
 
 var (
-	mainFileDir = "cmd/api/"
-	handlerDir  = "handler/"
-	serverDir   = "server/"
-	viewsDir    = "views/"
+	mainFileDir = "test/cmd/api/"
+	handlerDir  = "test/handler/"
+	serverDir   = "test/server/"
+	viewsDir    = "test/views/"
+	// mainFileDir = "cmd/api/"
+	// handlerDir  = "handler/"
+	// serverDir   = "server/"
+	// viewsDir    = "views/"
 
 	mainFilePath    = filepath.Join(mainFileDir, "main.go")
 	handlerFilePath = filepath.Join(handlerDir, "handler.go")
@@ -248,11 +253,19 @@ func addNameToFiles(name string) (map[string]string, error) {
 }
 
 func main() {
-	data, err := addNameToFiles("foobar")
+	rawData, err := addNameToFiles("foobar")
 	check(err)
-	fmt.Println(data)
 
-	// TODO:
-	// 1. Accept flags to add the project name and choose custom options.
-	// 2. Create all the necessary directories and files and write the updated data to them.
+	fmt.Println("Creating folders") // Create folders
+	os.MkdirAll(mainFileDir, 0755)
+	os.Mkdir(handlerDir, 0755)
+	os.Mkdir(serverDir, 0755)
+	os.Mkdir(viewsDir, 0755)
+
+	fmt.Println("Creating and writing files") // Create files and write data
+	for filePath, data := range rawData {
+		fmt.Println("File path:", filePath, data)
+		os.WriteFile(filePath, []byte(data), 0644)
+	}
 }
+
