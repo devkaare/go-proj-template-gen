@@ -22,13 +22,15 @@ var (
 	// serverDir   = "server/"
 	// viewsDir    = "views/"
 
-	mainFilePath    = filepath.Join(mainFileDir, "main.go")
-	handlerFilePath = filepath.Join(handlerDir, "handler.go")
-	serverFilePath  = filepath.Join(serverDir, "server.go")
-	routesFilePath  = filepath.Join(serverDir, "routes.go")
-	makeFilePath    = "Makefile"
-	envFilePath     = ".env"
-	goModFilePath   = "go.mod"
+	mainFilePath      = filepath.Join(mainFileDir, "main.go")
+	handlerFilePath   = filepath.Join(handlerDir, "handler.go")
+	serverFilePath    = filepath.Join(serverDir, "server.go")
+	routesFilePath    = filepath.Join(serverDir, "routes.go")
+	viewsBaseFilePath = filepath.Join(viewsDir, "base.templ")
+	viewsHomeFilePath = filepath.Join(viewsDir, "home.templ")
+	makeFilePath      = "Makefile"
+	envFilePath       = ".env"
+	goModFilePath     = "go.mod"
 )
 
 func addNameToFiles(name string) (map[string]string, error) {
@@ -84,7 +86,7 @@ func addNameToFiles(name string) (map[string]string, error) {
 			log.Println("Graceful shutdown complete.")
 		}
 	`, name)
-	result["main.go"] = mainFileData
+	result[mainFilePath] = mainFileData
 
 	handlerFileData := fmt.Sprintf(`
 		package handler
@@ -101,7 +103,7 @@ func addNameToFiles(name string) (map[string]string, error) {
 			w.Write([]byte("Hello World!"))
 		}
 	`, name)
-	result["handler.go"] = handlerFileData
+	result[handlerFilePath] = handlerFileData
 
 	serverFileData := fmt.Sprintf(`
 		package server
@@ -137,7 +139,7 @@ func addNameToFiles(name string) (map[string]string, error) {
 			return server
 		}
 	`)
-	result["server.go"] = serverFileData
+	result[serverFilePath] = serverFileData
 
 	routesFileData := fmt.Sprintf(`
 		package server
@@ -175,9 +177,9 @@ func addNameToFiles(name string) (map[string]string, error) {
 
 		}
 	`, name)
-	result["routes.go"] = routesFileData
+	result[routesFilePath] = routesFileData
 
-	result["base.templ"] = `
+	result[viewsBaseFilePath] = `
 		package views
 
 		templ Base() {
@@ -197,7 +199,7 @@ func addNameToFiles(name string) (map[string]string, error) {
 		}
 	`
 
-	result["home.templ"] = `
+	result[viewsHomeFilePath] = `
 		package views
 
 		templ Home() {
@@ -230,13 +232,13 @@ func addNameToFiles(name string) (map[string]string, error) {
 
 		.PHONY: all run build test clean
 	`, mainFilePath)
-	result["Makefile"] = makeFileData
+	result[makeFilePath] = makeFileData
 
-	result[".env"] = `
+	result[envFilePath] = `
 		PORT=8080
 	`
 
-	result["go.mod"] = fmt.Sprintf(`
+	result[goModFilePath] = fmt.Sprintf(`
 		module github.com/devkaare/%s
 
 		go 1.23.5
