@@ -28,9 +28,12 @@ var (
 	routesFilePath    = filepath.Join(serverDir, "routes.go")
 	viewsBaseFilePath = filepath.Join(viewsDir, "base.templ")
 	viewsHomeFilePath = filepath.Join(viewsDir, "home.templ")
-	makeFilePath      = "Makefile"
-	envFilePath       = ".env"
-	goModFilePath     = "go.mod"
+	makeFilePath      = "test/Makefile"
+	envFilePath       = "test/.env"
+	goModFilePath     = "test/go.mod"
+	// makeFilePath      = "Makefile"
+	// envFilePath       = ".env"
+	// goModFilePath     = "go.mod"
 )
 
 func addNameToFiles(name string) (map[string]string, error) {
