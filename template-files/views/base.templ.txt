@@ -1,0 +1,37 @@
+package views
+
+templ Base() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>Todo | by Kaare</title>
+			<meta name="color-scheme" content="light dark"/>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+			<script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+		</head>
+		<body>
+			<!-- https://github.com/picocss/pico/discussions/482#discussioncomment-10465121 -->
+			<main class="container" style="transform: scale(0.9); max-width: 1000;">
+				<header>
+					<h1>Todo</h1>
+					<p>A simple project by Kaare</p>
+					<nav>
+						<ul>
+							<li>
+								<a href="/todos">Overview</a>
+							</li>
+						</ul>
+					</nav>
+				</header>
+				<section>
+					{ children... }
+				</section>
+				<footer>
+					<p>© 2024 Kaare</p>
+				</footer>
+			</main>
+		</body>
+	</html>
+}
