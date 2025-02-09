@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -34,6 +35,8 @@ var (
 	// makeFilePath      = "Makefile"
 	// envFilePath       = ".env"
 	// goModFilePath     = "go.mod"
+
+	requiredPackages = []string{"github.com/go-chi/chi", "github.com/go-chi/cors", "github.com/joho/godotenv", "github.com/a-h/templ"}
 )
 
 func addNameToFiles(name string) (map[string]string, error) {
@@ -250,6 +253,15 @@ func main() {
 	fmt.Println("Creating and writing files") // Create files and write data
 	for filePath, data := range rawData {
 		fmt.Println("\tFile:", filePath)
-		os.WriteFile(filePath, []byte(data), 0644)
+		check(os.WriteFile(filePath, []byte(data), 0644))
+	}
+
+	fmt.Println("Installing packages")
+	for _, p := range requiredPackages {
+		os.Chdir("test")
+		out, err := exec.Command("go", "get", p).Output()
+		check(err)
+
+		fmt.Println(out)
 	}
 }
