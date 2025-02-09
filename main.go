@@ -197,7 +197,7 @@ templ Base() {
 
 templ Home() {
 	@Base() {
-		</p>Hello World!</p>
+		<p>Hello World!</p>
 	}
 }`
 
@@ -265,4 +265,6 @@ func main() {
 
 		fmt.Println(string(out))
 	}
+
+	fmt.Println("Done!")
 }
