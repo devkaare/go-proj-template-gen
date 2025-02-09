@@ -262,6 +262,6 @@ func main() {
 		out, err := exec.Command("go", "get", p).Output()
 		check(err)
 
-		fmt.Println(out)
+		fmt.Println(string(out))
 	}
 }
