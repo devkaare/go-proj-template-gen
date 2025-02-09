@@ -36,7 +36,7 @@ var (
 	// envFilePath       = ".env"
 	// goModFilePath     = "go.mod"
 
-	requiredPackages = []string{"github.com/go-chi/chi", "github.com/go-chi/cors", "github.com/joho/godotenv", "github.com/a-h/templ"}
+	requiredPackages = []string{"github.com/go-chi/chi/v5", "github.com/go-chi/chi/v5/middleware", "github.com/go-chi/cors", "github.com/joho/godotenv", "github.com/a-h/templ"}
 )
 
 func addNameToFiles(name string) (map[string]string, error) {
