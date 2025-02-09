@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -244,7 +245,10 @@ require (
 }
 
 func main() {
-	rawData, err := addNameToFiles("foobar")
+	name := flag.String("name", "johndoe", "project name")
+	flag.Parse()
+
+	rawData, err := addNameToFiles(*name)
 	check(err)
 
 	testDir := "test/"
