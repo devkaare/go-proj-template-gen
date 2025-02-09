@@ -245,15 +245,15 @@ require (
 }
 
 func main() {
-	name := flag.String("name", "foobar", "project name")
+	name := flag.String("name", "my-new-project", "project name")
 	flag.Parse()
 
 	rawData, err := addNameToFiles(*name)
 	check(err)
 
-	testDir := "test/"
-	os.Mkdir(testDir, 0755)
-	os.Chdir(testDir)
+	// testDir := "test/"
+	// os.Mkdir(testDir, 0755)
+	// os.Chdir(testDir)
 
 	fmt.Println("Creating folders...") // Create folders
 	os.MkdirAll(mainFileDir, 0755)
