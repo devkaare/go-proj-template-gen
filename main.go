@@ -188,8 +188,7 @@ templ Base() {
 			</main>
 		</body>
 	</html>
-}
-`
+}`
 
 	result[viewsHomeFilePath] = `package views
 
@@ -197,8 +196,7 @@ templ Home() {
 	@Base() {
 		</p>Hello World!</p>
 	}
-}
-`
+}`
 
 	makeFileData := fmt.Sprintf(`MAIN_FILE_PATH = %s
 
@@ -220,13 +218,10 @@ clean:
 	@rm -rf main
 	@go mod tidy
 
-.PHONY: all run build test clean
-	`, mainFilePath)
+.PHONY: all run build test clean`, mainFilePath)
 	result[makeFilePath] = makeFileData
 
-	result[envFilePath] = `
-		PORT=8080
-	`
+	result[envFilePath] = `PORT=8080`
 
 	result[goModFilePath] = fmt.Sprintf(`module github.com/devkaare/%s
 
@@ -237,8 +232,7 @@ require (
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-chi/cors v1.2.1
 	github.com/joho/godotenv v1.5.1
-)
-	`, name)
+)`, name)
 
 	return result, nil
 }
@@ -255,8 +249,7 @@ func main() {
 
 	fmt.Println("Creating and writing files") // Create files and write data
 	for filePath, data := range rawData {
-		fmt.Println("File path:", filePath, data)
+		fmt.Println("\tFile:", filePath)
 		os.WriteFile(filePath, []byte(data), 0644)
 	}
 }
-
