@@ -21,15 +21,11 @@ func (s *Server) RegisterRoutes() http.Handler {
 		MaxAge:           300,
 	}))
 
-	r.Route("/", s.RegisterNewRoutes)
-
-	return r
-}
-
-func (s *Server) RegisterNewRoutes(r chi.Router) {
 	handler := &handler.New{}
 
+	// r.Get("/", templ.Handler(web.HelloForm()).ServeHTTP)
 	r.Get("/hello", handler.Greet)
 	r.Get("/farms", handler.Farms)
 
+	return r
 }
