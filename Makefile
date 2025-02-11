@@ -7,6 +7,7 @@ run:
 
 build:
 	@echo "Building..."
+	@templ generate
 	@go build -o bin/go-proj-template-gen $(MAIN_FILE_PATH)
 test:
 	@echo "Testing..."

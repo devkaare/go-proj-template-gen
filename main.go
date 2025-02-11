@@ -279,10 +279,14 @@ func main() {
 		fmt.Println(string(out))
 	}
 
-	fmt.Println("Generating `templ` files:")
-	out, err := exec.Command("templ", "generate").Output()
+	fmt.Println("Installing templ:")
+	out, err := exec.Command("go", "install", "").Output()
 	check(err)
+	fmt.Println(string(out))
 
+	fmt.Println("Generating templ files:")
+	out, err = exec.Command("templ", "generate").Output()
+	check(err)
 	fmt.Println(string(out))
 
 	fmt.Println("Done!")
