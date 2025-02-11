@@ -6,7 +6,7 @@
 
 Currently this is only setup to be used on with github account, but you can change this in `main.go`
 
-### Commands
+### Available Cmds
 
 - Install:
 
@@ -26,13 +26,26 @@ go-proj-template-gen -name="my-new-project"
 go-proj-template-gen -h
 ```
 
-### Dev Commands
-
 - Run:
-  `make run`
+
+```
+make run
+```
+
 - Build:
-  `make build`
+
+```
+make build
+```
+
 - Test:
-  `make test`
+
+```
+make test
+```
+
 - Clean:
-  `make clean`
+
+```
+make clean
+```
