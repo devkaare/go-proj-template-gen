@@ -6,24 +6,33 @@
 
 Currently this is only setup to be used on with github account, but you can change this in `main.go`
 
-### Commands:
+### Commands
 
 - Install:
+
 ```
 go install github.com/devkaare/go-proj-template-gen
 ```
 
-- If you have the program installed you can run it with:
+- Run:
+
 ```
 go-proj-template-gen -name="my-new-project"
 ```
 
-- NOTE: there's also a help command available which is:
+- Help:
+
 ```
 go-proj-template-gen -h
 ```
 
-- Run: `make run`
-- Build: `make build`
-- Test: `make test`
-- Clean: `make clean`
+### Dev Commands
+
+- Run:
+  `make run`
+- Build:
+  `make build`
+- Test:
+  `make test`
+- Clean:
+  `make clean`
