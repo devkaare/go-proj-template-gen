@@ -4,7 +4,7 @@
 
 ## Usage
 
-Currently this is only setup to be used on with github account, but you can change this in `main.go`
+This is only setup to be used with my github account, but you can change this in `main.go`
 
 ### Available Cmds
 
